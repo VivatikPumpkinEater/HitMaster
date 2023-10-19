@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/// <summary> Статические постоянные данные объекта. Не надо хранить в прогрессе </summary>
+/// <summary> Статические постоянные данные объекта.</summary>
 [Serializable]
 public class LocationStaticData
 {
