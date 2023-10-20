@@ -19,11 +19,11 @@ public static class LevelCreator
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
         scene.name = locationName;
 
-        InitScene(scene, locationName);
+        InitScene(scene);
     }
 
     /// <summary> Сцена создана, инициализировать сцену  </summary>
-    private static void InitScene(Scene scene, string levelName)
+    private static void InitScene(Scene scene)
     {
         // DirectionalLight
         var directionalLightGameObject = new GameObject("DirectionalLight", typeof(Light));
@@ -68,7 +68,7 @@ public static class LevelCreator
 
         var locationName = scene.name;
 
-        CreateLocationPrefab(directionalLight, levelName);
+        CreateLocationPrefab(directionalLight);
 
         var levelSceneFolder = $"{PathConfig.ScenesFolder}";
         if (!Directory.Exists(levelSceneFolder))
@@ -81,7 +81,7 @@ public static class LevelCreator
         AssetDatabase.Refresh();
     }
 
-    private static void CreateLocationPrefab(Light light, string levelName)
+    private static void CreateLocationPrefab(Light light)
     {
         var locationTr = CreateGameObject(null, LocationParentName).transform;
         var location = locationTr.AddComponent<LocationContainer>();

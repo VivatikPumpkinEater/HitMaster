@@ -10,4 +10,12 @@ public class SplashScreen : MonoBehaviour
         
         _levelProgressController = new LevelProgressController();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            _levelProgressController.Test(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            _levelProgressController.Test(1);
+    }
 }

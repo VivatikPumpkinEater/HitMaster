@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2dff45c18e400a806c05a2206661eb, type: 3}
   m_Name: SceneLoader
   m_EditorClassIdentifier: 
-  _levels:
-  - m_AssetGUID: 988d9edf6c9748340b802cd7dc82bc61
+  _locations:
+  - m_AssetGUID: c07334a00aada844283ed013deaa3e1b
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: c07334a00aada844283ed013deaa3e1b
+  - m_AssetGUID: 988d9edf6c9748340b802cd7dc82bc61
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

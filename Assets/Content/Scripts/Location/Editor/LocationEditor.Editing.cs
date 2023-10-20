@@ -58,7 +58,7 @@ partial class LocationEditor
         };
         
         //Save data
-        var jsonSettings = LocationContext.JsonSettings;
+        var jsonSettings = JsonConfig.Settings;
         var locationDataJson = JsonConvert.SerializeObject(staticData, jsonSettings);
         var locationDataPath = PathConfig.StaticData(locationName);
         var locationDataAsset = new TextAsset(locationDataJson);
