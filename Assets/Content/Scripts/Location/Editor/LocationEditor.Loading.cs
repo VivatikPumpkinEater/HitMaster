@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -44,7 +46,7 @@ partial class LocationEditor
                 !string.IsNullOrEmpty(_newLocationName))
             {
                 CurrentState = EditorState.Editing;
-                LoadLocation(_newLocationName);
+                LoadLocation(_newLocationName).Forget();
             }
         }
         GUILayout.EndHorizontal();
@@ -54,10 +56,69 @@ partial class LocationEditor
             CurrentState = EditorState.Creation;
     }
 
-    private void LoadLocation(string locationName)
+    private async UniTask LoadLocation(string locationName)
     {
         var path = Path.Combine(PathConfig.ScenesFolder, locationName);
-        EditorSceneManager.OpenScene($"{path}.unity");
+        var scene = EditorSceneManager.OpenScene($"{path}.unity");
+        await UniTask.WaitWhile(() => !scene.isLoaded);
+
+        LocationContainer.WaypointTransform.AddComponent<WaypointEditor>();
+        
+        // Data
+        var staticData = JsonConfig.LoadStaticData(LocationContainer.StaticData);
+        
+        var enemies = new Dictionary<string, EnemyLocationComponent>();
+        var waypoints = new Dictionary<WaypointLocationComponent, List<string>>();
+
+        foreach (var objectStaticData in staticData.ObjectsData)
+        {
+            var id = objectStaticData.Id;
+
+            switch (objectStaticData)
+            {
+                case WaypointStaticData waypointData:
+                {
+                    var go = LevelCreator.CreateGameObjectFromData(waypointData, LocationContainer.WaypointTransform);
+                    var waypointLocationComponent = go.AddComponent<WaypointLocationComponent>();
+                    WaypointEditor.Waypoints.Add(waypointLocationComponent);
+                    
+                    waypoints.Add(waypointLocationComponent, waypointData.EnemiesID);
+                    break;
+                }
+                
+                case EnemyStaticData enemyData:
+                {
+                    var go = LevelCreator.CreateGameObjectFromData(enemyData);
+                    var enemyLocationComponent = go.AddComponent<EnemyLocationComponent>();
+                    enemyLocationComponent.Id = id;
+                    enemyLocationComponent.EnemyType = enemyData.Type;
+                    
+                    LevelCreator.CreateEnemyPreview(enemyLocationComponent.transform, enemyData.Type);
+                    
+                    enemies.Add(id, enemyLocationComponent);
+                    break;
+                }
+                
+                default:
+                {
+                    var go = LevelCreator.CreateGameObject(LocationContainer.EnvironmentTransform, objectStaticData.Name);
+                    go.AddComponent<LocationComponent>().Id = objectStaticData.Id;
+                    break;
+                }
+            }
+        }
+
+        foreach (var (waypoint, enemiesId) in waypoints)
+        {
+            foreach (var enemyId in enemiesId)
+            {
+                var enemy = enemies[enemyId];
+                waypoint.EnemyLocationComponents.Add(enemy);
+                enemy.transform.parent = waypoint.transform;
+            }
+        }
+        
+        WaypointEditor.ImmediatelyUpdateData();
     }
 
     private List<string> GetLevelsList()

@@ -1,7 +1,12 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
@@ -11,7 +16,7 @@ public static class LevelCreator
     public const string LocationParentName = "Location";
     public const string EnvironmentParentName = "Environment";
     public const string StartCharacterPointName = "StartCharacterPoint";
-    public const string EnemiesParentName = "Enemies";
+    public const string WaypointsParentName = "Waypoints";
 
     /// <summary> Создать сцену </summary>
     public static void Create(string locationName)
@@ -77,6 +82,26 @@ public static class LevelCreator
         var scenePath = $"{levelSceneFolder}/{locationName}.unity";
         EditorSceneManager.SaveScene(scene, scenePath);
 
+        var settings = AddressableAssetSettingsDefaultObject.Settings;
+        if (settings)
+        {
+            var sceneGuid = AssetDatabase.AssetPathToGUID(scenePath);
+            var asset = new AssetReference(sceneGuid);
+            var group = settings.DefaultGroup;
+
+            var e = settings.CreateOrMoveEntry(sceneGuid, group, false, false);
+            var entriesAdded = new List<AddressableAssetEntry> { e };
+
+            group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, false, true);
+            settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true, false);
+            
+            SceneLoader.AddLocation(asset);
+            
+            Debug.LogWarning("The scene is automatically added to the SceneLoader");
+        }
+        else
+            Debug.LogWarning("The scene is not added to SceneLoader");
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -95,8 +120,9 @@ public static class LevelCreator
         var environmentsParent = CreateGameObject(locationTr, EnvironmentParentName).transform;
         location.EnvironmentTransform = environmentsParent;
 
-        // Enemies
-        location.EnemiesTransform = CreateGameObject(locationTr, EnemiesParentName).transform;
+        // Waypoints
+        location.WaypointTransform = CreateGameObject(locationTr, WaypointsParentName).transform;
+        location.WaypointTransform.AddComponent<WaypointEditor>();
     }
 
     /// <summary> Создать объект </summary>
@@ -108,5 +134,21 @@ public static class LevelCreator
         go.transform.localScale = Vector3.one;
 
         return go;
+    }
+
+    public static GameObject CreateGameObjectFromData(ObjectStaticData data, Transform parent = null)
+    {
+        var go = new GameObject(data.Name);
+        go.transform.SetParent(parent);
+        go.transform.SetLocalPositionAndRotation(data.Position, data.Rotation);
+        go.transform.localScale = data.Scale;
+
+        return go;
+    }
+
+    public static async void CreateEnemyPreview(Transform parent, EnemyType type)
+    {
+        var asset = EnemiesConfig.GetAssetByType(type);
+        await Addressables.InstantiateAsync(asset, parent);
     }
 }

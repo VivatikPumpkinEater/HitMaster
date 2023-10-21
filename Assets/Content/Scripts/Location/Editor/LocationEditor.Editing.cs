@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 partial class LocationEditor
 {
+    private const string Waypoint = "Waypoint";
+
     private void EditingSceneOnGUI()
     {
         EditorGUILayout.LabelField(LocationName, GUIStyles.TitleLabel);
@@ -15,10 +18,22 @@ partial class LocationEditor
 
         // Location elements
         EditorGUILayout.LabelField("Waypoints", GUIStyles.TitleLabel);
+        {
+            if (GUILayout.Button("Add Waypoint", GUIStyles.YellowButton))
+            {
+                var go = LevelCreator.CreateGameObject(LocationContainer.WaypointTransform, Waypoint);
+                var waypointLocationComponent = go.AddComponent<WaypointLocationComponent>();
+                WaypointEditor.Waypoints.Add(waypointLocationComponent);
+                WaypointEditor.ImmediatelyUpdateData();
+                Selection.activeObject = go;
+            }
+        }
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-
-        // Enemies
+        
         EditorGUILayout.LabelField("Enemies", GUIStyles.TitleLabel);
+        {
+            EnemiesEditor.OnGUI();
+        }
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
         // Save data
@@ -56,6 +71,22 @@ partial class LocationEditor
         {
             ObjectsData = new(),
         };
+
+        var waypoints = LocationContainer.WaypointTransform.GetComponentsInChildren<WaypointLocationComponent>();
+        foreach (var waypointLocationComponent in waypoints)
+        {
+            var data = new ObjectStaticData(waypointLocationComponent);
+            var enemiesIds = new List<string>();
+            
+            foreach (var enemyLocationComponent in waypointLocationComponent.EnemyLocationComponents)
+            {
+                enemiesIds.Add(enemyLocationComponent.Id);
+                var enemyData = new ObjectStaticData(enemyLocationComponent);
+                staticData.ObjectsData.Add(new EnemyStaticData(enemyData, enemyLocationComponent.EnemyType));
+            }
+
+            staticData.ObjectsData.Add(new WaypointStaticData(data, enemiesIds));
+        }
         
         //Save data
         var jsonSettings = JsonConfig.Settings;
@@ -80,6 +111,16 @@ partial class LocationEditor
 
     private void CloseScene()
     {
+        var locationsComponent = LocationContainer.GetComponentsInChildren<LocationComponent>();
+        foreach (var locationComponent in locationsComponent)
+        {
+            if (locationComponent == null)
+                continue;
+            DestroyImmediate(locationComponent.gameObject);
+        }
+        
+        DestroyImmediate(WaypointEditor);
+        
         var activeScene = SceneManager.GetActiveScene();
         if (!activeScene.name.Contains(PatternLocationName))
         {

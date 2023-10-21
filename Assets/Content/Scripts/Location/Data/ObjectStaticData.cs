@@ -3,14 +3,14 @@ using UnityEngine;
 
 /// <summary> Данные объекта на карте </summary>
 [Serializable]
-public abstract class ObjectStaticData
+public class ObjectStaticData
 {
-    /// <summary> GetInstance объекта </summary>
+    /// <summary> GetInstance ID </summary>
     [HideInInspector] public string Id;
-
-    /// <summary> Ссылка на адресабл объекта </summary>
-    [HideInInspector] public string Path;
-
+    
+    /// <summary> Имя объекта </summary>
+    [HideInInspector] public string Name;
+    
     /// <summary> Глобальная позиция </summary>
     [HideInInspector] public Vector3 Position;
 
@@ -24,10 +24,21 @@ public abstract class ObjectStaticData
     {
     }
 
+    public ObjectStaticData(LocationComponent locationComponent)
+    {
+        var locCompTransform = locationComponent.transform;
+
+        Id = locationComponent.Id;
+        Name = locationComponent.name;
+        Position = locCompTransform.position;
+        Rotation = locCompTransform.rotation;
+        Scale = locCompTransform.localScale;
+    }
+
     protected ObjectStaticData(ObjectStaticData data)
     {
         Id = data.Id;
-        Path = data.Path;
+        Name = data.Name;
         Position = data.Position;
         Rotation = data.Rotation;
         Scale = data.Scale;

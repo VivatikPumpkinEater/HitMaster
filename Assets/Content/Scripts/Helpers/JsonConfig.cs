@@ -8,7 +8,8 @@ public static class JsonConfig
         NullValueHandling = NullValueHandling.Ignore,
         DefaultValueHandling = DefaultValueHandling.Ignore,
         Formatting = Formatting.None,
-        TypeNameHandling = TypeNameHandling.Objects
+        TypeNameHandling = TypeNameHandling.Objects,
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
     };
     
     /// <summary> Загрузить статические данные локации </summary>

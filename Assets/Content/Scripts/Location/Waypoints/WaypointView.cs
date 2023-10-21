@@ -1,3 +1,6 @@
 ﻿using UnityEngine;
 
-public class WaypointView : MonoBehaviour { }
+public class WaypointView : MonoBehaviour
+{
+    
+}

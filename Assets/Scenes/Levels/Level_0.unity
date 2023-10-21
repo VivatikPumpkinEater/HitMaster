@@ -705,7 +705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 684791637}
   m_Layer: 0
-  m_Name: Enemies
+  m_Name: Waypoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,7 +1938,7 @@ MonoBehaviour:
   DirectionalLight: {fileID: 753454218}
   StartCharacterPoint: {fileID: 451946447}
   EnvironmentTransform: {fileID: 1520810053}
-  EnemiesTransform: {fileID: 684791637}
+  WaypointTransform: {fileID: 684791637}
 --- !u!4 &2010660577
 Transform:
   m_ObjectHideFlags: 0

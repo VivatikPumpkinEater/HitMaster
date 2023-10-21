@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,15 @@ partial class LocationEditor : EditorWindow
     
     private EditorState _editorState;
     private LocationContainer _locationContainer;
+    
+    private WaypointEditor _waypointEditor;
+    private EnemiesEditor _enemiesEditor;
+
+    private WaypointEditor WaypointEditor => _waypointEditor == null
+        ? _waypointEditor = LocationContainer.WaypointTransform.GetComponent<WaypointEditor>()
+        : _waypointEditor;
+    
+    private EnemiesEditor EnemiesEditor { get; set; }
 
     private static string LocationName => SceneManager.GetActiveScene().name;
 
@@ -47,6 +57,22 @@ partial class LocationEditor : EditorWindow
         window.minSize = new(400, 50);
         window.titleContent = new("LevelEditor");
         window.Show();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.activeSceneChanged += OnSceneChanged;
+    }
+
+    private void OnSceneChanged(Scene oldScene, Scene newScene)
+    {
+        SetComponents().Forget();
+    }
+
+    private async UniTask SetComponents()
+    {
+        await UniTask.WaitWhile(() => WaypointEditor != null);
+        EnemiesEditor = new EnemiesEditor(WaypointEditor);
     }
     
     private void OnGUI()

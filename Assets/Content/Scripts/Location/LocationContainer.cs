@@ -17,5 +17,5 @@ public class LocationContainer : MonoBehaviour
     public Transform EnvironmentTransform;
 
     /// <summary> Родитель всех врагов </summary>
-    public Transform EnemiesTransform;
+    public Transform WaypointTransform;
 }

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class WaypointLocationComponent : MonoBehaviour
+public class WaypointLocationComponent : LocationComponent
 {
-    
+    public List<EnemyLocationComponent> EnemyLocationComponents = new();
 }

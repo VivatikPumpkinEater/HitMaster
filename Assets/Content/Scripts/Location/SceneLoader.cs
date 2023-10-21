@@ -6,6 +6,11 @@ public class SceneLoader : BaseConfig<SceneLoader>
 {
     [SerializeField] private List<AssetReference> _locations;
 
+    public static void AddLocation(AssetReference assetReference)
+    {
+        Instance._locations.Add(assetReference);
+    }
+    
     public static AssetReference GetLocation(int index)
     {
         return Instance._locations.Count < index ? null : Instance._locations[index];
