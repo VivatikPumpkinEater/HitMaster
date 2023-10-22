@@ -8,19 +8,19 @@ public class InputHandler : MonoBehaviour
 
     private LayerMask LayerMask => LayerManager.Default | LayerManager.Enemy;
 
-    private void Awake()
+    private void Start()
     {
-        _camera = Camera.main;
+        _camera = FindObjectOfType<Camera>();
     }
 
     private void Update()
     {
 #if UNITY_EDITOR
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
             Raycasting(Input.mousePosition);
 #endif
         
-        if (Input.touchCount != 0)
+        if (Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
             Raycasting(Input.GetTouch(0).position);
     }
 

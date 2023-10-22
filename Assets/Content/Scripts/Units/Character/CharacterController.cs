@@ -14,9 +14,10 @@ public class CharacterController : IDisposable
         _inputHandler = inputHandler;
 
         _inputHandler.RaycastHit += OnRaycastHit;
+        _waypointsController.WaypointChange += MoveNextWaypoint;
     }
 
-    private void MoveNext()
+    private void MoveNextWaypoint()
     {
         _view.NavMeshAgent.SetDestination(_waypointsController.CurrentWaypoint);
     }
@@ -29,5 +30,6 @@ public class CharacterController : IDisposable
     public void Dispose()
     {
         _inputHandler.RaycastHit -= OnRaycastHit;
+        _waypointsController.WaypointChange -= MoveNextWaypoint;
     }
 }

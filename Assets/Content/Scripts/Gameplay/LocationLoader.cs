@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -65,12 +66,20 @@ public class LocationLoader
         }
 
         _waypointsController = new WaypointsController(waypointsList);
+        
+        var virtualCam = await CreateCamera();
 
         var input = new GameObject("InputHandler").AddComponent<InputHandler>();
 
         var characterGo = await Addressables.InstantiateAsync(CharacterConfig.GetCharacterAsset(), _locationContainer.StartCharacterPoint);
         var characterView = characterGo.GetComponent<CharacterView>();
         var characterController = new CharacterController(characterView, _waypointsController, input);
+        
+        var characterTransform = characterView.transform;
+        virtualCam.Follow = characterTransform;
+        virtualCam.LookAt = characterTransform;
+        
+        _waypointsController.OnInit();
     }
     
     private GameObject CreateGameObjectFromData(ObjectStaticData data, Transform parent = null)
@@ -83,8 +92,11 @@ public class LocationLoader
         return go;
     }
 
-    private void CreateCamera()
+    private async UniTask<CinemachineVirtualCamera> CreateCamera()
     {
+        var asset = CamerasConfig.GetGameplayCamera();
+        var camerasGo = await Addressables.InstantiateAsync(asset);
         
+        return camerasGo.GetComponentInChildren<CinemachineVirtualCamera>();
     }
 }

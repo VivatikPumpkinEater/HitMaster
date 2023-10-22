@@ -37,6 +37,14 @@ MonoBehaviour:
     m_Address: Assets/Content/Prefabs/Character.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: f225a85de6748b6409d226e9dad4bbb3
+    m_Address: Assets/Content/Prefabs/Cameras/Cameras.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fa83b4234e161df449568725ae57eaff
+    m_Address: Assets/Content/Prefabs/Bullets/Bullet.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5284e93eb235e744fa6e739da8f4cc53, type: 2}
   m_SchemaSet:

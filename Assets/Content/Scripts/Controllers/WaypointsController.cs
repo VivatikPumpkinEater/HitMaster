@@ -20,6 +20,11 @@ public class WaypointsController : IDisposable
             waypointController.Completed += OnWaypointCompleted;
     }
 
+    public void OnInit()
+    {
+        ChangeWaypointPosition();
+    }
+
     private void OnWaypointCompleted(WaypointController waypointController)
     {
         waypointController.Completed -= OnWaypointCompleted;
@@ -28,7 +33,13 @@ public class WaypointsController : IDisposable
         if (_waypoints.Count == 0)
             Completed?.Invoke();
         else
-            WaypointChange?.Invoke();
+            ChangeWaypointPosition();
+    }
+
+    private void ChangeWaypointPosition()
+    {
+        CurrentWaypoint = _waypoints[0].Position;
+        WaypointChange?.Invoke();
     }
 
     public void Dispose()
