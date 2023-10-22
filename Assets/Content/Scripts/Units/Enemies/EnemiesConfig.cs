@@ -8,7 +8,7 @@ public class EnemiesConfig : BaseConfig<EnemiesConfig>
     [SerializeField] private List<string> _enemiesTypes;
     [SerializeField] private List<Model> _models;
 
-    private Dictionary<EnemyType, AssetReference> _enemies = new();
+    private Dictionary<EnemyType, AssetReferenceT<EnemyView>> _enemies = new();
 
 #if UNITY_EDITOR
     
@@ -45,6 +45,6 @@ public class EnemiesConfig : BaseConfig<EnemiesConfig>
     public class Model
     {
         public EnemyType Type;
-        public AssetReference Asset;
+        public AssetReferenceT<EnemyView> Asset;
     }
 }

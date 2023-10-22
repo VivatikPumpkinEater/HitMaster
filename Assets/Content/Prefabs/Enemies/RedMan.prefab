@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057138058378326650}
   - component: {fileID: 6362347820012431360}
+  - component: {fileID: 6276701240037782659}
   m_Layer: 0
   m_Name: RedMan
   m_TagString: Untagged
@@ -107,7 +108,7 @@ Animator:
   m_GameObject: {fileID: 423450352128354496}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4f6e594d4b308324a80731d84d9e356c, type: 3}
-  m_Controller: {fileID: 9100000, guid: a043ce754b1c3cb4a95972be21ff135f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 845577d5007895d4c8245e96c587fc64, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -117,6 +118,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &6276701240037782659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423450352128354496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99c9a5851f4440698dd7e39eb5dcf7bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &451003377351646430
 GameObject:
   m_ObjectHideFlags: 0

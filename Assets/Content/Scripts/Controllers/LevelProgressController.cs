@@ -3,10 +3,12 @@ using UnityEngine.AddressableAssets;
 
 public class LevelProgressController
 {
+    private readonly LocationLoader _locationLoader;
     private int _currentLevel;
     
     public LevelProgressController()
     {
+        _locationLoader = new LocationLoader();
     }
 
     public void Test(int i)
@@ -18,6 +20,7 @@ public class LevelProgressController
     private async UniTask LoadLevel()
     {
         var assetReference = SceneLoader.GetLocation(_currentLevel);
-        var sceneInstance = await Addressables.LoadSceneAsync(assetReference);
+        var scene = await Addressables.LoadSceneAsync(assetReference);
+        await _locationLoader.Init();
     }
 }
