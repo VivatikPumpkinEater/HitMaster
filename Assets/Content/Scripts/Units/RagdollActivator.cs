@@ -5,7 +5,9 @@ public class RagdollActivator : MonoBehaviour
     [SerializeField] private Rigidbody[] _rigidbodies;
     
     private Animator _animator;
+    private Collider _collider;
     private Animator Animator => _animator ??= GetComponent<Animator>();
+    private Collider Collider => _collider ??= GetComponent<Collider>();
 
     public void Activate()
     {
@@ -13,6 +15,7 @@ public class RagdollActivator : MonoBehaviour
             rb.isKinematic = false;
 
         Animator.enabled = false;
+        Collider.enabled = false;
     }
 
 #if UNITY_EDITOR
