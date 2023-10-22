@@ -33,6 +33,10 @@ MonoBehaviour:
     m_Address: Assets/Scenes/MainMenu.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 2a4b4342585a22c4fb722157febe4822
+    m_Address: Assets/Content/Prefabs/Character.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5284e93eb235e744fa6e739da8f4cc53, type: 2}
   m_SchemaSet:

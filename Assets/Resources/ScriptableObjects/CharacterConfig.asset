@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: CharacterConfig
   m_EditorClassIdentifier: 
   _characterPrefab:
-    m_AssetGUID: 
+    m_AssetGUID: 2a4b4342585a22c4fb722157febe4822
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _movementSpeed: 0
