@@ -19,7 +19,7 @@ public class SceneLoader : BaseConfig<SceneLoader>
     
     public static AssetReference GetLocation(int index)
     {
-        return Instance._locations.Count < index ? null : Instance._locations[index];
+        return Instance._locations.Count <= index ? null : Instance._locations[index];
     }
 
     public static AssetReference GetFirstLocation()

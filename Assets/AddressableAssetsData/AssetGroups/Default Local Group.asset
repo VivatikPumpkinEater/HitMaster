@@ -29,8 +29,8 @@ MonoBehaviour:
     m_Address: Assets/Content/Prefabs/Enemies/YellowMan.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: fc84d8c5f5cc4764f809b4e182d409ef
-    m_Address: Assets/Scenes/Levels/Level_1.unity
+  - m_GUID: 5b430cd9a2003b840a731d14d46aa2ba
+    m_Address: Assets/Scenes/MainMenu.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
