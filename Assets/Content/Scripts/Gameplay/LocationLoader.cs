@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using GameObject = UnityEngine.GameObject;
 
 /// <summary>  </summary>
 public class LocationLoader
@@ -64,6 +65,12 @@ public class LocationLoader
         }
 
         _waypointsController = new WaypointsController(waypointsList);
+
+        var input = new GameObject("InputHandler").AddComponent<InputHandler>();
+
+        var characterGo = await Addressables.InstantiateAsync(CharacterConfig.GetCharacterAsset(), _locationContainer.StartCharacterPoint);
+        var characterView = characterGo.GetComponent<CharacterView>();
+        var characterController = new CharacterController(characterView, _waypointsController, input);
     }
     
     private GameObject CreateGameObjectFromData(ObjectStaticData data, Transform parent = null)
@@ -74,5 +81,10 @@ public class LocationLoader
         go.transform.localScale = data.Scale;
 
         return go;
+    }
+
+    private void CreateCamera()
+    {
+        
     }
 }

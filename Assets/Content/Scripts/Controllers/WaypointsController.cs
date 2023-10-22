@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary> Контроллер вэйпоинтов </summary>
 public class WaypointsController : IDisposable
 {
     public event Action Completed;
+    public event Action WaypointChange;
 
     private readonly List<WaypointController> _waypoints;
+
+    public Vector3 CurrentWaypoint { get; private set; }
 
     public WaypointsController(List<WaypointController> waypoints)
     {
@@ -23,6 +27,8 @@ public class WaypointsController : IDisposable
         
         if (_waypoints.Count == 0)
             Completed?.Invoke();
+        else
+            WaypointChange?.Invoke();
     }
 
     public void Dispose()
