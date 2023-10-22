@@ -1,10 +1,20 @@
 ﻿using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : PoolObject
 {
-    private Vector3 _direction;
+    ///Маленький, скромненький костыль
+    [SerializeField] private BulletType _bulletType;
     
-    public void Init(Vector3 direction)
+    private Vector3 _direction;
+    private float _speed;
+    
+    private void Awake()
+    {
+        _speed = BulletsConfig.GetSpeedByType(_bulletType);
+    }
+
+    /// <summary> Инициализация перед выстрелом </summary>
+    public void InitShoot(Vector3 direction)
     {
         _direction = direction;
     }
@@ -14,11 +24,16 @@ public class Bullet : MonoBehaviour
         if (_direction == Vector3.zero)
             return;
         
-        transform.Translate(_direction * 15f * Time.deltaTime);
+        transform.Translate(_direction * _speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        var damageable = other.GetComponent<Damageable>();
+        if (damageable)
+            damageable.TakeDamage();
+        
+        _direction = Vector3.zero;
+        ReturnToPool();
     }
 }

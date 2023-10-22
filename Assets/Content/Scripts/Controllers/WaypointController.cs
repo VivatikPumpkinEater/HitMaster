@@ -20,6 +20,8 @@ public class WaypointController : IDisposable
 
         foreach (var enemy in _enemies)
             enemy.Die += OnEnemyDie;
+        
+        Validate();
     }
 
     private void OnEnemyDie(EnemyController enemyController)
@@ -27,11 +29,15 @@ public class WaypointController : IDisposable
         enemyController.Die -= OnEnemyDie;
         _enemies.Remove(enemyController);
         
+        Validate();
+    }
+
+    private void Validate()
+    {
         if (_enemies.Count == 0)
             Completed?.Invoke(this);
     }
     
-
     public void Dispose()
     {
         foreach (var enemy in _enemies)

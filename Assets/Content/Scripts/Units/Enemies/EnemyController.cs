@@ -1,4 +1,5 @@
 ﻿using System;
+using Object = UnityEngine.Object;
 
 /// <summary> Контроллер врага </summary>
 public class EnemyController : IDisposable
@@ -25,10 +26,15 @@ public class EnemyController : IDisposable
         
         if (_view.RagdollActivator != null)
             _view.RagdollActivator.Activate();
+        else
+        {
+            Object.Destroy(_view.gameObject);
+            Dispose();
+        }
     }
 
     public void Dispose()
     {
-        _view.Damage += OnTakeDamage;
+        _view.Damage -= OnTakeDamage;
     }
 }

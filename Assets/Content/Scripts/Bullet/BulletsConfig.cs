@@ -8,7 +8,7 @@ public class BulletsConfig : BaseConfig<BulletsConfig>
     [SerializeField] private List<string> _bulletTypes;
     [SerializeField] private List<Model> _models;
 
-    private Dictionary<BulletType, AssetReference> _bullets = new();
+    private Dictionary<BulletType, Model> _bullets = new();
 
 #if UNITY_EDITOR
 
@@ -24,7 +24,7 @@ public class BulletsConfig : BaseConfig<BulletsConfig>
             if (_bullets.ContainsKey(model.Type))
                 continue;
 
-            _bullets.Add(model.Type, model.Asset);
+            _bullets.Add(model.Type, model);
         }
     }
 
@@ -33,7 +33,12 @@ public class BulletsConfig : BaseConfig<BulletsConfig>
         if (!Instance._bullets.ContainsKey(type))
             return null;
 
-        return Instance._bullets[type];
+        return Instance._bullets[type].Asset;
+    }
+
+    public static float GetSpeedByType(BulletType type)
+    {
+        return Instance._bullets[type].Speed;
     }
 
     public void GenerateTypes()
@@ -46,5 +51,6 @@ public class BulletsConfig : BaseConfig<BulletsConfig>
     {
         public BulletType Type;
         public AssetReference Asset;
+        public float Speed;
     }
 }

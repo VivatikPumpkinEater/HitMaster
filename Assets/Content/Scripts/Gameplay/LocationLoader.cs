@@ -13,6 +13,8 @@ public class LocationLoader
 
     public async UniTask Init()
     {
+        ResetData();
+        
         _locationContainer = Object.FindObjectOfType<LocationContainer>();
         var locationStaticData = JsonConfig.LoadStaticData(_locationContainer.StaticData);
         await CreateLocationObjects(locationStaticData);
@@ -70,16 +72,24 @@ public class LocationLoader
         var virtualCam = await CreateCamera();
 
         var input = new GameObject("InputHandler").AddComponent<InputHandler>();
+        var bulletPool = new GameObject("BulletPool").AddComponent<Pool>();
+        await bulletPool.Init(BulletsConfig.GetAssetByType(BulletType.Simple), 15);
 
         var characterGo = await Addressables.InstantiateAsync(CharacterConfig.GetCharacterAsset(), _locationContainer.StartCharacterPoint);
         var characterView = characterGo.GetComponent<CharacterView>();
-        var characterController = new CharacterController(characterView, _waypointsController, input);
+        var characterController = new CharacterController(characterView, _waypointsController, input, bulletPool);
         
         var characterTransform = characterView.transform;
         virtualCam.Follow = characterTransform;
         virtualCam.LookAt = characterTransform;
         
         _waypointsController.OnInit();
+        _waypointsController.Completed += OnWaypointsComplete;
+    }
+
+    private void OnWaypointsComplete()
+    {
+        LevelProgress.LoadNextLevel().Forget();
     }
     
     private GameObject CreateGameObjectFromData(ObjectStaticData data, Transform parent = null)
@@ -98,5 +108,10 @@ public class LocationLoader
         var camerasGo = await Addressables.InstantiateAsync(asset);
         
         return camerasGo.GetComponentInChildren<CinemachineVirtualCamera>();
+    }
+
+    private void ResetData()
+    {
+        _waypointsController?.Dispose();
     }
 }
