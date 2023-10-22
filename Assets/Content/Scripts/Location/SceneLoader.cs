@@ -23,7 +23,7 @@ public class SceneLoader : BaseConfig<SceneLoader>
 
 #if UNITY_EDITOR
     [UnityEditor.MenuItem("Location/SceneLoader", false, 1)]
-    private static void Active()
+    public static void Active()
     {
         UnityEditor.Selection.activeObject = Instance;
     }

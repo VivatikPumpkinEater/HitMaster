@@ -6,5 +6,5 @@ TextAsset:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StaticData_Level_2
+  m_Name: StaticData_Level_1
   m_Script: '{"$type":"LocationStaticData, Assembly-CSharp","ObjectsData":[]}'

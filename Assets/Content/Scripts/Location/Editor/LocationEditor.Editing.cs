@@ -9,6 +9,18 @@ partial class LocationEditor
 {
     private const string Waypoint = "Waypoint";
 
+    private WaypointEditor _waypointEditor;
+    private bool _isDrawSelectMode;
+
+    private EnemyType _selectedEnemyType;
+    private int _waypointIndex;
+
+    private WaypointEditor WaypointEditor => _waypointEditor == null
+        ? _waypointEditor = LocationContainer.WaypointTransform.GetComponent<WaypointEditor>()
+        : _waypointEditor;
+    
+    private List<string> WaypointsNames => _waypointEditor.Names;
+
     private void EditingSceneOnGUI()
     {
         EditorGUILayout.LabelField(LocationName, GUIStyles.TitleLabel);
@@ -32,7 +44,7 @@ partial class LocationEditor
         
         EditorGUILayout.LabelField("Enemies", GUIStyles.TitleLabel);
         {
-            EnemiesEditor.OnGUI();
+            OnEnemiesGUI();
         }
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
@@ -55,6 +67,39 @@ partial class LocationEditor
             else
                 CurrentState = EditorState.Editing;
         }
+    }
+
+    private void OnEnemiesGUI()
+    {
+        if (WaypointEditor == null || WaypointsNames == null || WaypointsNames.Count == 0)
+        {
+            EditorGUILayout.HelpBox("To add enemies, you must create a Waypoint", MessageType.Info);
+            return;
+        }
+        
+        EditorGUILayout.BeginVertical();
+        {
+            _waypointIndex = EditorGUILayout.Popup("Waypoints names", _waypointIndex, WaypointsNames.ToArray());
+            _selectedEnemyType = (EnemyType)EditorGUILayout.EnumPopup("EnemyType:", _selectedEnemyType);
+
+            if (GUILayout.Button("Create", GUIStyles.YellowButtonTwoMarginsHigh))
+            {
+                var parentTr = GameObject.Find(WaypointsNames[_waypointIndex])?.transform;
+                if (parentTr == null)
+                    return;
+
+                var waypointLocationComponent = parentTr.GetComponent<WaypointLocationComponent>();
+                var go = LevelCreator.CreateGameObject(parentTr, _selectedEnemyType.ToString());
+                var enemyLocationComponent = go.AddComponent<EnemyLocationComponent>();
+                enemyLocationComponent.EnemyType = _selectedEnemyType;
+                waypointLocationComponent.EnemyLocationComponents.Add(enemyLocationComponent);
+                
+                LevelCreator.CreateEnemyPreview(enemyLocationComponent.transform, _selectedEnemyType);
+                
+                Selection.activeObject = go;
+            }
+        }
+        EditorGUILayout.EndVertical();
     }
 
     private void SaveLocationData()

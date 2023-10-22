@@ -33,22 +33,6 @@ MonoBehaviour:
     m_Address: Assets/Scenes/Levels/Level_1.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 988d9edf6c9748340b802cd7dc82bc61
-    m_Address: Assets/Scenes/Levels/Level_2.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 80a4746ba58a09442bcca44ba4790814
-    m_Address: Assets/Scenes/Levels/Level_3.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 91a0dda9e1e468c4a9bd65b47fe94394
-    m_Address: Assets/Scenes/Levels/Level_4.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: f29908e007be8974f81beccf67646bb3
-    m_Address: Assets/Scenes/Levels/Level_5.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5284e93eb235e744fa6e739da8f4cc53, type: 2}
   m_SchemaSet:

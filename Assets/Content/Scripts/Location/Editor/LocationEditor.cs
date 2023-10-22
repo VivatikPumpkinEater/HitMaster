@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,15 +9,6 @@ partial class LocationEditor : EditorWindow
     
     private EditorState _editorState;
     private LocationContainer _locationContainer;
-    
-    private WaypointEditor _waypointEditor;
-    private EnemiesEditor _enemiesEditor;
-
-    private WaypointEditor WaypointEditor => _waypointEditor == null
-        ? _waypointEditor = LocationContainer.WaypointTransform.GetComponent<WaypointEditor>()
-        : _waypointEditor;
-    
-    private EnemiesEditor EnemiesEditor { get; set; }
 
     private static string LocationName => SceneManager.GetActiveScene().name;
 
@@ -59,22 +49,6 @@ partial class LocationEditor : EditorWindow
         window.Show();
     }
 
-    private void OnEnable()
-    {
-        SceneManager.activeSceneChanged += OnSceneChanged;
-    }
-
-    private void OnSceneChanged(Scene oldScene, Scene newScene)
-    {
-        SetComponents().Forget();
-    }
-
-    private async UniTask SetComponents()
-    {
-        await UniTask.WaitWhile(() => WaypointEditor != null);
-        EnemiesEditor = new EnemiesEditor(WaypointEditor);
-    }
-    
     private void OnGUI()
     {
         GUILayout.Label("Location Editor", GUIStyles.TitleLabel);
@@ -91,6 +65,9 @@ partial class LocationEditor : EditorWindow
         if (!LocationName.Contains(PatternLocationName) && CurrentState != EditorState.Creation)
             CurrentState = EditorState.Loading;
 
+        HeaderOnGUI();
+        GUILayout.Space(15);
+        
         try
         {
             switch (CurrentState)
@@ -118,6 +95,21 @@ partial class LocationEditor : EditorWindow
                            "through the LevelEditor.");
         }
     }
+    
+    private void HeaderOnGUI()
+    {
+        EditorGUILayout.BeginHorizontal();
+        {
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("SceneLoader", GUIStyles.YellowButton, GUILayout.Width(120)))
+                SceneLoader.Active();
+
+            if (GUILayout.Button(EditorGUIUtility.IconContent("d__Help@2x"), GUIStyles.MiniButton))
+                Application.OpenURL(PathConfig.HelpUrl);
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
 
     private enum EditorState
     {
