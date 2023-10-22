@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 partial class LocationEditor
 {
@@ -133,6 +136,8 @@ partial class LocationEditor
             staticData.ObjectsData.Add(new WaypointStaticData(data, enemiesIds));
         }
         
+        BakeNavMesh();
+        
         //Save data
         var jsonSettings = JsonConfig.Settings;
         var locationDataJson = JsonConvert.SerializeObject(staticData, jsonSettings);
@@ -146,6 +151,12 @@ partial class LocationEditor
         LocationContainer.StaticData = AssetDatabase.LoadAssetAtPath<TextAsset>(locationDataPath);
 
         Debug.LogWarning("--------------Data saved--------------");
+    }
+
+    private void BakeNavMesh()
+    {
+        var navMeshSurface = LocationContainer.EnvironmentTransform.GetComponent<NavMeshSurface>();
+        navMeshSurface.BuildNavMesh();
     }
 
     /// <summary> Сохранить сцену </summary>

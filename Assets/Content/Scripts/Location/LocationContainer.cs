@@ -15,6 +15,9 @@ public class LocationContainer : MonoBehaviour
 
     /// <summary> Окружение </summary>
     public Transform EnvironmentTransform;
+    
+    /// <summary> Окружение </summary>
+    public Transform PropsTransform;
 
     /// <summary> Родитель всех врагов </summary>
     public Transform WaypointTransform;

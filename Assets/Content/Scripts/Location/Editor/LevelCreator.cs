@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -7,6 +8,7 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
@@ -15,6 +17,7 @@ public static class LevelCreator
 {
     public const string LocationParentName = "Location";
     public const string EnvironmentParentName = "Environment";
+    public const string PropsParentName = "Props";
     public const string StartCharacterPointName = "StartCharacterPoint";
     public const string WaypointsParentName = "Waypoints";
 
@@ -113,16 +116,26 @@ public static class LevelCreator
         location.DirectionalLight = light;
 
         // StartCharacterPoint
-        var startPoint = CreateGameObject(locationTr, StartCharacterPointName).transform;
-        location.StartCharacterPoint = startPoint;
+        location.StartCharacterPoint = CreateGameObject(locationTr, StartCharacterPointName).transform;
 
         // Environments
         var environmentsParent = CreateGameObject(locationTr, EnvironmentParentName).transform;
+        var navMeshSurface = environmentsParent.AddComponent<NavMeshSurface>();
         location.EnvironmentTransform = environmentsParent;
+        SetupNavMeshSurface(navMeshSurface);
+        
+        // Props
+        location.PropsTransform = CreateGameObject(locationTr, PropsParentName).transform;
 
         // Waypoints
         location.WaypointTransform = CreateGameObject(locationTr, WaypointsParentName).transform;
         location.WaypointTransform.AddComponent<WaypointEditor>();
+    }
+
+    private static void SetupNavMeshSurface(NavMeshSurface navMeshSurface)
+    {
+        navMeshSurface.collectObjects = CollectObjects.Children;
+        navMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
     }
 
     /// <summary> Создать объект </summary>
