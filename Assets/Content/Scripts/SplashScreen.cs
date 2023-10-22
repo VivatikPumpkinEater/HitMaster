@@ -1,21 +1,19 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class SplashScreen : MonoBehaviour
 {
-    private LevelProgressController _levelProgressController;
-    
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        Application.targetFrameRate = 120;
         
-        _levelProgressController = new LevelProgressController();
+        LoadMainMenu();
     }
 
-    private void Update()
+    private async void LoadMainMenu()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            _levelProgressController.Test(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            _levelProgressController.Test(1);
+        var mainMenuAsset = SceneLoader.GetMainMenu();
+        await Addressables.LoadSceneAsync(mainMenuAsset);
     }
 }

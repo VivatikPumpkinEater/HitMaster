@@ -51,7 +51,8 @@ partial class LocationEditor : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("Location Editor", GUIStyles.TitleLabel);
+        GUILayout.Label("Location Editor", GUIStyles.WindowTitleStyle);
+        GUILayout.Label("", GUI.skin.horizontalSlider);
         
         if (Application.isPlaying)
         {
@@ -65,6 +66,7 @@ partial class LocationEditor : EditorWindow
         if (!LocationName.Contains(PatternLocationName) && CurrentState != EditorState.Creation)
             CurrentState = EditorState.Loading;
 
+        GUILayout.Space(15);
         HeaderOnGUI();
         GUILayout.Space(15);
         

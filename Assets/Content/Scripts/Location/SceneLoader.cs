@@ -4,11 +4,17 @@ using UnityEngine.AddressableAssets;
 
 public class SceneLoader : BaseConfig<SceneLoader>
 {
+    [SerializeField] private AssetReference _mainMenu;
     [SerializeField] private List<AssetReference> _locations;
 
     public static void AddLocation(AssetReference assetReference)
     {
         Instance._locations.Add(assetReference);
+    }
+
+    public static AssetReference GetMainMenu()
+    {
+        return Instance._mainMenu;
     }
     
     public static AssetReference GetLocation(int index)

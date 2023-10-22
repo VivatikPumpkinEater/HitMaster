@@ -31,14 +31,6 @@ public static class GUIStyles
             normal = { textColor = new Color(1f, 0.44f, 0.38f) }
         };
 
-        public static readonly GUIStyle LeftAlignmentLabelStyle = new GUIStyle(EditorStyles.label)
-        {
-            normal = { textColor = new Color(0.9f, 1f, 0.78f) },
-            alignment = TextAnchor.MiddleLeft,
-            fontStyle = FontStyle.Bold,
-            fixedWidth = 150f
-        };
-
         public static readonly GUIStyle WindowTitleStyle = new GUIStyle(EditorStyles.label)
         {
             normal = { textColor = new Color(0.0f, 0.76f, 0.02f) },
@@ -51,17 +43,5 @@ public static class GUIStyles
         {
             normal = { textColor = Color.yellow },
             fixedHeight = 38
-        };
-        
-        public static readonly GUIStyle YellowButtonOneMarginsHigh = new(GUI.skin.button)
-        {
-            normal = { textColor = Color.yellow },
-            fixedHeight = 18.5f
-        };
-        
-        public static readonly GUIStyle CreateLevelButton = new(GUI.skin.button)
-        {
-            normal = { textColor = Color.yellow },
-            fixedHeight = 25
         };
     }

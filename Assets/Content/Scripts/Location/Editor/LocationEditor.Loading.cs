@@ -25,24 +25,20 @@ partial class LocationEditor
         EditorGUILayout.LabelField("Loading", GUIStyles.TitleLabel);
         GUILayout.BeginHorizontal("", "box");
         {
-            GUILayout.BeginVertical();
-            {
-                // LevelName
-                var levelIndex =
-                    EditorGUILayout.Popup("Location name:", _selectedLocationIndex, _locationNames.ToArray());
-                if (levelIndex != _selectedLocationIndex)
-                    _selectedLocationIndex = 0;
+            // LevelName
+            var levelIndex =
+                EditorGUILayout.Popup("Location name:", _selectedLocationIndex, _locationNames.ToArray());
+            if (levelIndex != _selectedLocationIndex)
+                _selectedLocationIndex = 0;
 
-                _selectedLocationIndex = levelIndex;
+            _selectedLocationIndex = levelIndex;
 
-                _newLocationName = _locationNames.Count > 0
-                    ? _locationNames[_selectedLocationIndex]
-                    : string.Empty;
-            }
-            GUILayout.EndVertical();
+            _newLocationName = _locationNames.Count > 0
+                ? _locationNames[_selectedLocationIndex]
+                : string.Empty;
 
             // Load scene
-            if (GUILayout.Button("Load", GUIStyles.YellowButtonTwoMarginsHigh) &&
+            if (GUILayout.Button("Load", GUIStyles.YellowButton) &&
                 !string.IsNullOrEmpty(_newLocationName))
             {
                 CurrentState = EditorState.Editing;
@@ -63,10 +59,10 @@ partial class LocationEditor
         await UniTask.WaitWhile(() => !scene.isLoaded);
 
         LocationContainer.WaypointTransform.AddComponent<WaypointEditor>();
-        
+
         // Data
         var staticData = JsonConfig.LoadStaticData(LocationContainer.StaticData);
-        
+
         var enemies = new Dictionary<string, EnemyLocationComponent>();
         var waypoints = new Dictionary<WaypointLocationComponent, List<string>>();
 
@@ -81,27 +77,28 @@ partial class LocationEditor
                     var go = LevelCreator.CreateGameObjectFromData(waypointData, LocationContainer.WaypointTransform);
                     var waypointLocationComponent = go.AddComponent<WaypointLocationComponent>();
                     WaypointEditor.Waypoints.Add(waypointLocationComponent);
-                    
+
                     waypoints.Add(waypointLocationComponent, waypointData.EnemiesID);
                     break;
                 }
-                
+
                 case EnemyStaticData enemyData:
                 {
                     var go = LevelCreator.CreateGameObjectFromData(enemyData);
                     var enemyLocationComponent = go.AddComponent<EnemyLocationComponent>();
                     enemyLocationComponent.Id = id;
                     enemyLocationComponent.EnemyType = enemyData.Type;
-                    
+
                     LevelCreator.CreateEnemyPreview(enemyLocationComponent.transform, enemyData.Type);
-                    
+
                     enemies.Add(id, enemyLocationComponent);
                     break;
                 }
-                
+
                 default:
                 {
-                    var go = LevelCreator.CreateGameObject(LocationContainer.EnvironmentTransform, objectStaticData.Name);
+                    var go = LevelCreator.CreateGameObject(LocationContainer.EnvironmentTransform,
+                        objectStaticData.Name);
                     go.AddComponent<LocationComponent>().Id = objectStaticData.Id;
                     break;
                 }
@@ -117,7 +114,7 @@ partial class LocationEditor
                 enemy.transform.parent = waypoint.transform;
             }
         }
-        
+
         WaypointEditor.ImmediatelyUpdateData();
     }
 
