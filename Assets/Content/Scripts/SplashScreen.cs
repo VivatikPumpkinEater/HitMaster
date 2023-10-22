@@ -8,6 +8,13 @@ public class SplashScreen : MonoBehaviour
     {
         Application.targetFrameRate = 120;
         
+        FakeLoading().Forget();
+    }
+
+    private async UniTask FakeLoading()
+    {
+        await UniTask.Delay(3000);
+        
         LoadMainMenu();
     }
 

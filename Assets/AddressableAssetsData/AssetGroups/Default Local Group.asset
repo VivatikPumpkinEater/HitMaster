@@ -25,7 +25,7 @@ MonoBehaviour:
     m_Address: Assets/Content/Prefabs/Enemies/RedMan.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 81ee94a3f0f0f1b42918acadc743a148
+  - m_GUID: e697b55bcd475aa4bb45c1eeac4d0e3a
     m_Address: Assets/Content/Prefabs/Enemies/YellowMan.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []

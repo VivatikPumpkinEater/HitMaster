@@ -18,7 +18,7 @@ MonoBehaviour:
   _models:
   - Type: 0
     Asset:
-      m_AssetGUID: 81ee94a3f0f0f1b42918acadc743a148
+      m_AssetGUID: e697b55bcd475aa4bb45c1eeac4d0e3a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
